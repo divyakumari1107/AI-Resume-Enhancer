@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}AI Resume Enhancement - {{ app_name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <h2 class="fw-bold text-navy mb-0">AI Resume Enhancer & Comparison</h2>
+                {% if enhancement %}
+                    <span class="badge bg-purple-subtle text-purple border border-purple-subtle rounded-pill px-3 py-1 text-xs fw-semibold">
+                        <i class="bi bi-stars me-1"></i>{{ enhancement.engine }}
+                    </span>
+                {% endif %}
+            </div>
+            <p class="text-muted text-sm mb-0">
+                Enhance <strong>{{ resume.original_filename }}</strong> using the STAR method, active verbs, and ATS optimization while strictly preserving your authentic experience.
+            </p>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+            <a href="{{ url_for('analysis', resume_id=resume.id) }}" class="btn btn-outline-secondary btn-sm px-3 py-2 rounded-pill fw-semibold">
+                <i class="bi bi-pie-chart me-1"></i>ATS Audit
+            </a>
+            <a href="{{ url_for('builder', resume_id=resume.id) }}" class="btn btn-primary btn-sm px-3 py-2 rounded-pill fw-semibold shadow-sm d-flex align-items-center gap-1">
+                <i class="bi bi-pencil-square me-1"></i>Resume Builder
+            </a>
+        </div>
+    </div>
+
+    <!-- Optimization Controls & Target Context -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+        <form method="POST" action="{{ url_for('enhance', resume_id=resume.id) }}" id="aiEnhanceForm">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-5">
+                    <label for="target_role" class="form-label fw-bold text-navy text-sm">Target Engineering Role / Title</label>
+                    <input type="text" class="form-control rounded-3" id="target_role" name="target_role" placeholder="e.g. Senior Software Engineer, DevOps Architect" value="{{ target_role }}">
+                </div>
+                <div class="col-md-5">
+                    <label for="job_description" class="form-label fw-bold text-navy text-sm">Optional Target Job Description (For Context)</label>
+                    <input type="text" class="form-control rounded-3" id="job_description" name="job_description" placeholder="Keywords or brief job requirements to prioritize..." value="{{ job_desc }}">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-purple btn-lg w-100 rounded-pill fw-semibold text-white shadow-sm d-flex align-items-center justify-content-center gap-2" id="enhanceRunBtn">
+                        <i class="bi bi-stars"></i>
+                        <span>Generate</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Score Impact Dashboard Banner (Feature 5) -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-navy text-white">
+        <div class="row align-items-center g-3">
+            <div class="col-md-3 text-center border-end-md border-navy-light">
+                <div class="text-xs uppercase tracking-wider text-muted fw-bold mb-1">Original ATS Score</div>
+                <div class="fs-2 fw-bold text-white">{{ initial_ats.overall_score }}<span class="text-xs text-muted">/100</span></div>
+                <span class="badge bg-secondary text-xs rounded-pill">{{ initial_ats.overall_status }}</span>
+            </div>
+
+            <div class="col-md-3 text-center border-end-md border-navy-light">
+                <div class="text-xs uppercase tracking-wider text-muted fw-bold mb-1">Improved Projected Score</div>
+                <div class="fs-2 fw-bold text-success">{{ initial_ats.improved_score }}<span class="text-xs text-muted">/100</span></div>
+                <span class="badge bg-success-subtle text-success text-xs rounded-pill">+{{ initial_ats.improved_score - initial_ats.overall_score }} Point Boost</span>
+            </div>
+
+            <div class="col-md-6">
+                <div class="ps-md-2">
+                    <h6 class="fw-bold text-white mb-2"><i class="bi bi-shield-check text-primary me-2"></i>Fact-Preserving AI Guarantee</h6>
+                    <p class="text-xs text-white-50 mb-0">
+                        Our model enhances sentence structure, active verbs, and quantifiable impact while strictly preventing hallucination of companies, degrees, dates, or certifications.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Before & After Comparison Sections -->
+    {% if enhancement %}
+    <!-- Section 1: Professional Summary -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+        <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+            <h5 class="fw-bold text-navy mb-0">
+                <i class="bi bi-file-person text-primary me-2"></i>1. Professional Summary Enhancement
+            </h5>
+            <button class="btn btn-outline-secondary btn-sm rounded-pill text-xs px-3" onclick="copyToClipboard('enhancedSummaryText', this)">
+                <i class="bi bi-clipboard me-1"></i>Copy Enhanced
+            </button>
+        </div>
+
+        <div class="row g-3">
+            <!-- Before -->
+            <div class="col-lg-6">
+                <div class="border rounded-4 p-3 bg-light h-100">
+                    <div class="text-xs uppercase fw-bold text-muted mb-2"><i class="bi bi-arrow-left-circle me-1"></i>Original Content</div>
+                    <p class="text-sm text-secondary mb-0" style="white-space: pre-wrap;">{{ enhancement.original_summary or 'No original summary detected in resume.' }}</p>
+                </div>
+            </div>
+
+            <!-- After -->
+            <div class="col-lg-6">
+                <div class="border border-purple-subtle rounded-4 p-3 bg-purple-subtle h-100">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="text-xs uppercase fw-bold text-purple"><i class="bi bi-stars me-1"></i>AI Enhanced (ATS-Optimized)</div>
+                        <span class="badge bg-purple text-white text-xs">High Impact</span>
+                    </div>
+                    <p class="text-sm text-navy fw-medium mb-3" id="enhancedSummaryText" style="white-space: pre-wrap;">{{ enhancement.summary.enhanced_text }}</p>
+                    
+                    {% if enhancement.summary.notes %}
+                    <div class="pt-2 border-top border-purple-subtle text-xs text-muted">
+                        <div class="fw-bold text-navy mb-1">Enhancement Notes:</div>
+                        <ul class="mb-0 ps-3">
+                            {% for note in enhancement.summary.notes %}
+                            <li>{{ note }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2: Work Experience Descriptions -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+        <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+            <h5 class="fw-bold text-navy mb-0">
+                <i class="bi bi-briefcase text-success me-2"></i>2. Experience & Accomplishment Enhancement (STAR Method)
+            </h5>
+            <button class="btn btn-outline-secondary btn-sm rounded-pill text-xs px-3" onclick="copyToClipboard('enhancedExpText', this)">
+                <i class="bi bi-clipboard me-1"></i>Copy Enhanced
+            </button>
+        </div>
+
+        <div class="row g-3">
+            <!-- Before -->
+            <div class="col-lg-6">
+                <div class="border rounded-4 p-3 bg-light h-100">
+                    <div class="text-xs uppercase fw-bold text-muted mb-2"><i class="bi bi-arrow-left-circle me-1"></i>Original Descriptions</div>
+                    <p class="text-sm text-secondary mb-0" style="white-space: pre-wrap;">{{ enhancement.original_experience or 'No experience block identified.' }}</p>
+                </div>
+            </div>
+
+            <!-- After -->
+            <div class="col-lg-6">
+                <div class="border border-success-subtle rounded-4 p-3 bg-success-subtle h-100">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="text-xs uppercase fw-bold text-success"><i class="bi bi-stars me-1"></i>STAR Formatted Accomplishments</div>
+                        <span class="badge bg-success text-white text-xs">Action-Oriented</span>
+                    </div>
+                    <div class="text-sm text-navy mb-3" id="enhancedExpText" style="white-space: pre-wrap;">{{ enhancement.experience.enhanced_text }}</div>
+                    
+                    {% if enhancement.experience.notes %}
+                    <div class="pt-2 border-top border-success-subtle text-xs text-muted">
+                        <div class="fw-bold text-navy mb-1">Improvements Made:</div>
+                        <ul class="mb-0 ps-3">
+                            {% for note in enhancement.experience.notes %}
+                            <li>{{ note }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3: Technical Projects -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+        <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+            <h5 class="fw-bold text-navy mb-0">
+                <i class="bi bi-code-slash text-info me-2"></i>3. Technical Projects Enhancement
+            </h5>
+            <button class="btn btn-outline-secondary btn-sm rounded-pill text-xs px-3" onclick="copyToClipboard('enhancedProjText', this)">
+                <i class="bi bi-clipboard me-1"></i>Copy Enhanced
+            </button>
+        </div>
+
+        <div class="row g-3">
+            <!-- Before -->
+            <div class="col-lg-6">
+                <div class="border rounded-4 p-3 bg-light h-100">
+                    <div class="text-xs uppercase fw-bold text-muted mb-2"><i class="bi bi-arrow-left-circle me-1"></i>Original Projects</div>
+                    <p class="text-sm text-secondary mb-0" style="white-space: pre-wrap;">{{ enhancement.original_projects or 'No separate projects block identified.' }}</p>
+                </div>
+            </div>
+
+            <!-- After -->
+            <div class="col-lg-6">
+                <div class="border border-info-subtle rounded-4 p-3 bg-info-subtle h-100">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="text-xs uppercase fw-bold text-info"><i class="bi bi-stars me-1"></i>Architectural & Delivery Focus</div>
+                        <span class="badge bg-info text-white text-xs">Optimized</span>
+                    </div>
+                    <div class="text-sm text-navy mb-3" id="enhancedProjText" style="white-space: pre-wrap;">{{ enhancement.projects.enhanced_text }}</div>
+                    
+                    {% if enhancement.projects.notes %}
+                    <div class="pt-2 border-top border-info-subtle text-xs text-muted">
+                        <div class="fw-bold text-navy mb-1">Optimizations:</div>
+                        <ul class="mb-0 ps-3">
+                            {% for note in enhancement.projects.notes %}
+                            <li>{{ note }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Apply to Builder CTA -->
+    <div class="d-flex justify-content-end gap-3 mb-5">
+        <a href="{{ url_for('builder', resume_id=resume.id) }}" class="btn btn-primary btn-lg px-4 py-2.5 rounded-pill fw-semibold shadow-sm d-flex align-items-center gap-2">
+            <i class="bi bi-pencil-square"></i>
+            <span>Load & Edit in Resume Builder</span>
+        </a>
+    </div>
+
+    {% else %}
+    <!-- Initial State Banner -->
+    <div class="text-center py-5 bg-white rounded-4 border p-5">
+        <div class="bg-purple-subtle text-purple rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+            <i class="bi bi-stars fs-2"></i>
+        </div>
+        <h4 class="fw-bold text-navy mb-2">Ready to Elevate Your Resume Content</h4>
+        <p class="text-muted text-sm max-w-lg mx-auto mb-4">
+            Click the "Generate" button above to rewrite your professional summary, upgrade bullet points with strong action verbs, and structure project descriptions.
+        </p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

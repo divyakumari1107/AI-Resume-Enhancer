@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Job Description Matching - {{ app_name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold text-navy mb-1">Job Description Keyword Matcher</h2>
+            <p class="text-muted text-sm mb-0">
+                Compare <strong>{{ resume.original_filename }}</strong> against any targeted job vacancy to detect keyword gaps and match percentage.
+            </p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <a href="{{ url_for('analysis', resume_id=resume.id) }}" class="btn btn-outline-secondary btn-sm px-3 py-2 rounded-pill fw-semibold">
+                <i class="bi bi-pie-chart me-1"></i>Back to ATS Analysis
+            </a>
+            <a href="{{ url_for('enhance', resume_id=resume.id) }}" class="btn btn-purple btn-sm px-3 py-2 rounded-pill fw-semibold text-white">
+                <i class="bi bi-magic me-1"></i>AI Enhancer
+            </a>
+        </div>
+    </div>
+
+    <!-- Job Description Input Form -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 mb-4 bg-white">
+        <form method="POST" action="{{ url_for('job_match', resume_id=resume.id) }}">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="target_role" class="form-label fw-bold text-navy text-sm">Target Role / Job Title</label>
+                    <input type="text" class="form-control rounded-3" id="target_role" name="target_role" placeholder="e.g. Senior Full-Stack Engineer, Cloud DevOps Specialist" value="{{ target_role }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-navy text-sm">Active Resume Being Compared</label>
+                    <div class="form-control bg-light rounded-3 d-flex align-items-center justify-content-between">
+                        <span class="text-navy text-sm fw-medium text-truncate">
+                            <i class="bi {% if resume.file_type == 'pdf' %}bi-filetype-pdf text-danger{% else %}bi-filetype-docx text-primary{% endif %} me-2"></i>
+                            {{ resume.original_filename }}
+                        </span>
+                        <span class="badge bg-primary text-xs">{{ resume.file_type|upper }}</span>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label for="job_description" class="form-label fw-bold text-navy text-sm">Paste Target Job Description <span class="text-danger">*</span></label>
+                    <textarea class="form-control rounded-3" id="job_description" name="job_description" rows="6" placeholder="Paste the complete job description, requirements, and tech stack here..." required>{{ job_desc }}</textarea>
+                    <div class="form-text text-xs text-muted">The analyzer will automatically parse required technical skills, qualifications, frameworks, and cloud competencies.</div>
+                </div>
+
+                <div class="col-12 mt-3">
+                    <button type="submit" class="btn btn-success btn-lg px-4 py-2.5 rounded-pill fw-semibold shadow-sm d-flex align-items-center gap-2">
+                        <i class="bi bi-crosshair"></i>
+                        <span>Calculate Job Match & Identify Keyword Gaps</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Match Results Section (Rendered when POST submitted) -->
+    {% if match %}
+    <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 mb-4 bg-white">
+        <div class="row align-items-center g-4 mb-4 pb-4 border-bottom">
+            <!-- Circular Gauge -->
+            <div class="col-md-4 text-center border-end-md">
+                <div class="text-xs uppercase tracking-wider text-muted fw-bold mb-2">Estimated Job Match</div>
+                <div class="circular-progress-wrap mx-auto my-3" style="width: 150px; height: 150px;">
+                    <svg class="circular-chart {% if match.match_percentage >= 70 %}text-success{% elif match.match_percentage >= 50 %}text-primary{% else %}text-warning{% endif %}" viewBox="0 0 36 36">
+                        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <path class="circle" stroke-dasharray="{{ match.match_percentage }}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    </svg>
+                    <div class="progress-label">
+                        <span class="fs-2 fw-bold text-navy">{{ match.match_percentage }}%</span>
+                        <span class="text-xs text-muted">aligned</span>
+                    </div>
+                </div>
+                <div class="text-xs text-muted">
+                    {{ match.matched_count }} matched of {{ match.job_keywords_count }} target keywords
+                </div>
+            </div>
+
+            <!-- Alignment Summary -->
+            <div class="col-md-8">
+                <div class="ps-md-3">
+                    <h5 class="fw-bold text-navy mb-2">Keyword Alignment Verdict</h5>
+                    <p class="text-muted text-sm mb-3">{{ match.match_summary }}</p>
+
+                    <div class="d-flex flex-wrap gap-3">
+                        <div class="p-2.5 px-3 bg-success-subtle text-success border border-success-subtle rounded-3 text-xs fw-semibold">
+                            <i class="bi bi-check2-circle me-1"></i> {{ match.matched_count }} Keywords Present
+                        </div>
+                        <div class="p-2.5 px-3 bg-danger-subtle text-danger border border-danger-subtle rounded-3 text-xs fw-semibold">
+                            <i class="bi bi-exclamation-triangle me-1"></i> {{ match.missing_count }} Missing Requirements
+                        </div>
+                        {% if match.required_exp_years %}
+                        <div class="p-2.5 px-3 bg-light text-navy border rounded-3 text-xs fw-semibold">
+                            <i class="bi bi-briefcase me-1 text-primary"></i> Exp Required: {{ match.required_exp_years }}+ Years
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Matched vs Missing Keywords Comparison -->
+        <div class="row g-4 mb-4">
+            <!-- Matched Keywords (Green) -->
+            <div class="col-lg-6">
+                <div class="border border-success-subtle bg-success-subtle rounded-4 p-4 h-100">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h6 class="fw-bold text-success mb-0">
+                            <i class="bi bi-check-circle-fill me-2"></i>Matched Keywords ({{ match.matched_count }})
+                        </h6>
+                        <span class="badge bg-success text-white rounded-pill text-xs">Present in Resume</span>
+                    </div>
+                    {% if match.matched_keywords %}
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for kw in match.matched_keywords %}
+                        <span class="badge bg-white text-success border border-success-subtle px-3 py-2 rounded-pill text-xs fw-semibold shadow-xs">
+                            <i class="bi bi-check-lg me-1"></i>{{ kw }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-xs text-muted mb-0">No direct technical keywords from the job listing were detected in your resume.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Missing Keywords (Red/Amber) -->
+            <div class="col-lg-6">
+                <div class="border border-danger-subtle bg-danger-subtle rounded-4 p-4 h-100">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h6 class="fw-bold text-danger mb-0">
+                            <i class="bi bi-exclamation-octagon-fill me-2"></i>Missing Target Keywords ({{ match.missing_count }})
+                        </h6>
+                        <span class="badge bg-danger text-white rounded-pill text-xs">Required by Job</span>
+                    </div>
+                    {% if match.missing_keywords %}
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for kw in match.missing_keywords %}
+                        <span class="badge bg-white text-danger border border-danger-subtle px-3 py-2 rounded-pill text-xs fw-semibold shadow-xs">
+                            <i class="bi bi-plus-lg me-1"></i>{{ kw }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-xs text-success mb-0 fw-semibold"><i class="bi bi-check-all me-1"></i>Outstanding! All identified job keywords are present in your resume.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Career Bridge & Honest Recommendations -->
+        {% if match.recommendations %}
+        <div class="card bg-light border-0 rounded-4 p-4">
+            <h6 class="fw-bold text-navy mb-3">
+                <i class="bi bi-signpost-split-fill text-primary me-2"></i>Evidence-Backed Skill Bridging Recommendations
+            </h6>
+            <div class="d-flex flex-column gap-3">
+                {% for rec in match.recommendations %}
+                <div class="p-3 bg-white border rounded-3 text-sm text-navy">
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                        <span class="badge bg-primary text-xs">{{ rec.skill }}</span>
+                        <span class="text-xs text-muted">Bridge from your experience in: <strong>{{ rec.bridge_from }}</strong></span>
+                    </div>
+                    <p class="mb-0 text-muted text-xs">{{ rec.advice }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Next Step CTA -->
+        <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
+            <a href="{{ url_for('enhance', resume_id=resume.id) }}" class="btn btn-purple px-4 py-2 rounded-pill fw-semibold text-white shadow-sm d-flex align-items-center gap-2">
+                <i class="bi bi-magic"></i>
+                <span>Optimize Resume for This Job with AI</span>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

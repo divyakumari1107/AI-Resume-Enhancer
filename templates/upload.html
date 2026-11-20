@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Resume - {{ app_name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="mb-4">
+        <h2 class="fw-bold text-navy mb-1">Upload Resume Document</h2>
+        <p class="text-muted text-sm mb-0">Upload your PDF or Word document (.docx) to automatically extract text, parse sections, and evaluate ATS compatibility.</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Upload Card & Drag and Drop Zone -->
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 bg-white">
+                <form id="resumeUploadForm" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+                    <!-- Drag and Drop Dropzone -->
+                    <div class="upload-dropzone border-2 border-dashed rounded-4 p-4 p-lg-5 text-center transition-all" id="dropZone">
+                        <input type="file" name="resume_file" id="resumeFileInput" class="d-none" accept=".pdf,.docx">
+                        
+                        <div class="upload-icon-wrap bg-primary-subtle text-primary rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 72px; height: 72px;">
+                            <i class="bi bi-cloud-arrow-up-fill fs-1"></i>
+                        </div>
+
+                        <h5 class="fw-bold text-navy mb-2">Drag and drop your resume here</h5>
+                        <p class="text-muted text-sm mb-3">or click the button below to browse files from your computer</p>
+
+                        <button type="button" class="btn btn-outline-primary px-4 py-2 rounded-pill fw-semibold mb-3" onclick="document.getElementById('resumeFileInput').click()">
+                            <i class="bi bi-folder2-open me-2"></i>Browse Files
+                        </button>
+
+                        <div class="d-flex justify-content-center align-items-center gap-2 text-xs text-muted">
+                            <span class="badge bg-light text-dark border"><i class="bi bi-file-earmark-pdf text-danger me-1"></i>PDF (.pdf)</span>
+                            <span class="badge bg-light text-dark border"><i class="bi bi-file-earmark-word text-primary me-1"></i>Word (.docx)</span>
+                            <span>• Max 16 MB</span>
+                        </div>
+                    </div>
+
+                    <!-- Selected File Info Banner (Hidden initially) -->
+                    <div id="selectedFileInfo" class="selected-file-banner d-none alert alert-light border rounded-3 p-3 mt-3 align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="bi bi-file-earmark-check-fill text-success fs-3" id="fileTypeIcon"></i>
+                            <div>
+                                <div class="fw-bold text-navy text-sm" id="selectedFileName">filename.pdf</div>
+                                <div class="text-xs text-muted" id="selectedFileSize">0 KB</div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-link text-danger text-decoration-none" id="removeFileBtn">
+                            <i class="bi bi-x-circle-fill fs-5"></i>
+                        </button>
+                    </div>
+
+                    <!-- Upload & Parse Button -->
+                    <div class="mt-4">
+                        <button type="submit" id="uploadSubmitBtn" class="btn btn-primary btn-lg w-100 rounded-pill fw-semibold shadow-sm py-2.5 d-flex align-items-center justify-content-center gap-2" disabled>
+                            <i class="bi bi-cpu-fill"></i>
+                            <span>Upload & Analyze ATS Compatibility</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Processing Progress Bar (Shown during upload) -->
+                <div id="uploadProgressContainer" class="d-none mt-4">
+                    <div class="d-flex justify-content-between text-xs text-muted mb-1">
+                        <span id="uploadProgressText">Extracting text & parsing sections...</span>
+                        <span id="uploadProgressPercent">60%</span>
+                    </div>
+                    <div class="progress" style="height: 6px;">
+                        <div id="uploadProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 60%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar: Upload Guidelines & Previous Resumes -->
+        <div class="col-lg-5">
+            <!-- Guidelines Card -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+                <h5 class="fw-bold text-navy mb-3"><i class="bi bi-shield-check text-primary me-2"></i>ATS File Guidelines</h5>
+                <ul class="list-unstyled text-sm mb-0 d-flex flex-column gap-2 text-muted">
+                    <li class="d-flex align-items-start gap-2">
+                        <i class="bi bi-check-circle-fill text-success mt-1"></i>
+                        <span><strong>Direct Text PDFs:</strong> Resumes generated digitally from Word or LaTeX parse seamlessly.</span>
+                    </li>
+                    <li class="d-flex align-items-start gap-2">
+                        <i class="bi bi-check-circle-fill text-success mt-1"></i>
+                        <span><strong>Standard Fonts:</strong> Arial, Calibri, Helvetica, and Times New Roman guarantee ATS OCR precision.</span>
+                    </li>
+                    <li class="d-flex align-items-start gap-2">
+                        <i class="bi bi-exclamation-triangle-fill text-warning mt-1"></i>
+                        <span><strong>Avoid Flattened Images:</strong> Avoid scanned images as ATS parsers cannot read raster graphics without OCR degradation.</span>
+                    </li>
+                    <li class="d-flex align-items-start gap-2">
+                        <i class="bi bi-lock-fill text-primary mt-1"></i>
+                        <span><strong>Data Confidentiality:</strong> Your resume stays private and local on your machine.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Recently Stored Resumes -->
+            {% if recent_resumes %}
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                <h6 class="fw-bold text-navy mb-3"><i class="bi bi-clock-history text-muted me-2"></i>Previously Uploaded Resumes</h6>
+                <div class="list-group list-group-flush">
+                    {% for r in recent_resumes %}
+                    <div class="list-group-item px-0 py-2 d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-2 text-truncate" style="max-width: 200px;">
+                            <i class="bi {% if r.file_type == 'pdf' %}bi-filetype-pdf text-danger{% else %}bi-filetype-docx text-primary{% endif %} fs-5"></i>
+                            <div class="text-truncate">
+                                <a href="{{ url_for('analysis', resume_id=r.id) }}" class="fw-semibold text-navy text-xs text-decoration-none text-truncate d-block">
+                                    {{ r.original_filename }}
+                                </a>
+                                <span class="text-xs text-muted">{{ r.created_at[:10] }}</span>
+                            </div>
+                        </div>
+                        <div class="btn-group btn-group-sm">
+                            <a href="{{ url_for('analysis', resume_id=r.id) }}" class="btn btn-sm btn-outline-primary py-0 px-2 text-xs">Analyze</a>
+                            <a href="{{ url_for('builder', resume_id=r.id) }}" class="btn btn-sm btn-outline-secondary py-0 px-2 text-xs">Edit</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

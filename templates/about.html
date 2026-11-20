@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}About Project - {{ app_name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="mb-4">
+        <h2 class="fw-bold text-navy mb-1">About AI Resume Enhancer & ATS Analyzer</h2>
+        <p class="text-muted text-sm mb-0">Full-stack Python & AI web application engineered for intelligent resume optimization and ATS parsing compliance.</p>
+    </div>
+
+    <!-- Overview Banner -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 mb-4 bg-white">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 text-xs fw-semibold mb-2">
+                    System Architecture & Philosophy
+                </span>
+                <h3 class="fw-bold text-navy mb-3">Bridging the Gap Between Job Seekers and Automated Hiring Algorithms</h3>
+                <p class="text-muted text-sm mb-3">
+                    Modern Applicant Tracking Systems (ATS) like Workday, Taleo, Greenhouse, and Lever filter out up to 75% of qualified resumes before human eyes ever see them. Most rejections are not due to lack of ability, but due to unindexed keywords, missing section markers, passive sentence structures, and complex document formatting.
+                </p>
+                <p class="text-muted text-sm mb-0">
+                    <strong>AI Resume Enhancer & ATS Analyzer</strong> was developed to give candidates institutional-grade tools to audit their documents, align with specific job descriptions, and apply modern AI rewriting without ever inventing false experiences or compromising truthful integrity.
+                </p>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="p-4 bg-light rounded-4 border text-navy">
+                    <i class="bi bi-cpu-fill text-primary display-4 mb-2 d-block"></i>
+                    <div class="fw-bold fs-5 mb-1">{{ app_name }}</div>
+                    <div class="text-xs text-muted mb-2">Version {{ app_version }} • Production Grade</div>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle text-xs rounded-pill">100% Python & Jinja2</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technical Architecture -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+        <h4 class="fw-bold text-navy mb-4"><i class="bi bi-stack text-primary me-2"></i>Technology Stack & Module Responsibilities</h4>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="border rounded-4 p-3 bg-surface h-100">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-filetype-py text-primary fs-4"></i>
+                        <h6 class="fw-bold text-navy mb-0">Flask Backend Engine</h6>
+                    </div>
+                    <p class="text-xs text-muted mb-0">
+                        Modular Python backend structured across specialized services (`resume_parser.py`, `ats_analyzer.py`, `job_matcher.py`, `ai_enhancer.py`, `pdf_generator.py`).
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="border rounded-4 p-3 bg-surface h-100">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-file-earmark-diff text-danger fs-4"></i>
+                        <h6 class="fw-bold text-navy mb-0">PyMuPDF & python-docx</h6>
+                    </div>
+                    <p class="text-xs text-muted mb-0">
+                        Native C-speed PDF parsing and Word XML text extraction that accurately extracts text, paragraph breaks, tables, and headers without external dependencies.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="border rounded-4 p-3 bg-surface h-100">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-stars text-purple fs-4"></i>
+                        <h6 class="fw-bold text-navy mb-0">Google Gemini API</h6>
+                    </div>
+                    <p class="text-xs text-muted mb-0">
+                        Integration via modern `google.genai` SDK using STAR prompt constraints to rewrite summaries, experience descriptions, and project achievements with zero hallucinations.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="border rounded-4 p-3 bg-surface h-100">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-file-earmark-pdf-fill text-info fs-4"></i>
+                        <h6 class="fw-bold text-navy mb-0">ReportLab PDF Studio</h6>
+                    </div>
+                    <p class="text-xs text-muted mb-0">
+                        Programmatic PDF generation generating three distinct professional templates: Modern Blue, Executive Slate, and Minimalist Tech.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="border rounded-4 p-3 bg-surface h-100">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-database-fill text-success fs-4"></i>
+                        <h6 class="fw-bold text-navy mb-0">SQLite Persistence</h6>
+                    </div>
+                    <p class="text-xs text-muted mb-0">
+                        Zero-configuration relational database storing resumes, structured JSON payloads, ATS scoring audits, and AI enhancement history with foreign key integrity.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="border rounded-4 p-3 bg-surface h-100">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-bootstrap-fill text-purple fs-4"></i>
+                        <h6 class="fw-bold text-navy mb-0">Bootstrap 5 & Vanilla JS</h6>
+                    </div>
+                    <p class="text-xs text-muted mb-0">
+                        Clean responsive dashboard UI with deep navy and royal blue palette, custom circular progress gauges, live preview synchronization, and drag-and-drop file upload.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ATS Scoring Methodology Explained -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+        <h4 class="fw-bold text-navy mb-3"><i class="bi bi-calculator-fill text-success me-2"></i>ATS Scoring Criteria & Weights</h4>
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle text-sm mb-0">
+                <thead class="table-light text-navy fw-bold text-xs uppercase">
+                    <tr>
+                        <th style="width: 25%;">Category</th>
+                        <th style="width: 15%;">Weight</th>
+                        <th>Evaluation Methodology</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="fw-semibold text-navy">Section Completeness</td>
+                        <td><span class="badge bg-primary text-xs">20%</span></td>
+                        <td class="text-muted">Presence of standard ATS markers: Contact info, Professional Summary, Work Experience, Technical Skills, and Education.</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold text-navy">Skills & Keyword Variety</td>
+                        <td><span class="badge bg-primary text-xs">25%</span></td>
+                        <td class="text-muted">Detection of industry-recognized skills across Languages, Frameworks, Cloud/DevOps, Databases, and Tools with domain breadth analysis.</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold text-navy">Experience Quality & Metrics</td>
+                        <td><span class="badge bg-primary text-xs">25%</span></td>
+                        <td class="text-muted">Density of strong past-tense action verbs (e.g. Spearheaded, Engineered), presence of quantifiable metrics (%, $, scale), and absence of passive phrases.</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold text-navy">Formatting & Readability</td>
+                        <td><span class="badge bg-primary text-xs">20%</span></td>
+                        <td class="text-muted">Word count calibration (350 - 950 words ideal), structured bullet points instead of prose walls, and standard typography boundaries.</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold text-navy">Contact & Online Presence</td>
+                        <td><span class="badge bg-primary text-xs">10%</span></td>
+                        <td class="text-muted">Verified presence of email, telephone number, LinkedIn profile URL, and GitHub / developer portfolio links.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

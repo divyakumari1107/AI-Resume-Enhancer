@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}AI Resume Enhancer & ATS Analyzer - Intelligent Resume Optimization{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Hero Section -->
+    <div class="hero-card bg-gradient-navy text-white rounded-4 p-4 p-lg-5 mb-5 shadow-lg position-relative overflow-hidden">
+        <div class="row align-items-center position-relative z-1">
+            <div class="col-lg-8 mb-4 mb-lg-0">
+                <div class="d-inline-flex align-items-center gap-2 bg-primary-subtle text-primary border border-primary-subtle px-3 py-1 rounded-pill text-xs fw-semibold mb-3">
+                    <i class="bi bi-stars"></i> Next-Gen AI & ATS Engineering
+                </div>
+                <h1 class="display-5 fw-extrabold mb-3 text-white">
+                    Supercharge Your Resume with <span class="text-primary-light">AI</span> & Beat the ATS Gatekeeper
+                </h1>
+                <p class="lead text-white-50 mb-4 max-w-xl">
+                    Get deep algorithmic ATS scoring, compare your resume against real job descriptions, rewrite your bullet points into high-impact STAR accomplishments with Google Gemini, and export professional PDF resumes in seconds.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{{ url_for('upload') }}" class="btn btn-primary btn-lg px-4 py-2.5 rounded-pill shadow-sm fw-semibold d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-cloud-arrow-up-fill fs-5"></i>
+                        <span>Upload Your Resume</span>
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light btn-lg px-4 py-2.5 rounded-pill fw-semibold d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-speedometer2 fs-5"></i>
+                        <span>Open Dashboard</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Live ATS Preview Card in Hero -->
+            <div class="col-lg-4">
+                <div class="card bg-navy-card border border-navy-light rounded-4 p-4 shadow-sm text-center">
+                    <div class="text-xs uppercase text-muted tracking-wider fw-bold mb-3">Sample ATS Score Gauge</div>
+                    <div class="circular-progress-wrap mx-auto mb-3" style="width: 140px; height: 140px;">
+                        <svg class="circular-chart text-primary" viewBox="0 0 36 36">
+                            <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="circle" stroke-dasharray="88, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                        <div class="progress-label">
+                            <span class="fs-2 fw-bold text-white">88</span>
+                            <span class="text-xs text-muted">/100</span>
+                        </div>
+                    </div>
+                    <div class="badge bg-success-subtle text-success px-3 py-1 rounded-pill fw-semibold text-xs mb-3">
+                        <i class="bi bi-check-circle-fill me-1"></i> Highly ATS-Compatible
+                    </div>
+                    <div class="text-xs text-muted">
+                        Simulating deep keyword parsing, action verb density, and layout compliance.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Background subtle glow decoration -->
+        <div class="hero-glow-1"></div>
+        <div class="hero-glow-2"></div>
+    </div>
+
+    <!-- Core Features Grid -->
+    <div class="mb-5">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-navy mb-2">Comprehensive Career Acceleration Suite</h2>
+            <p class="text-muted">Engineered for candidates seeking top-tier software engineering and tech roles</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Feature 1: ATS Resume Analyzer -->
+            <div class="col-md-6 col-xl-3">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 feature-card transition-all">
+                    <div class="feature-icon bg-primary-subtle text-primary rounded-3 mb-3 p-3 d-inline-flex">
+                        <i class="bi bi-pie-chart-fill fs-4"></i>
+                    </div>
+                    <h5 class="fw-bold text-navy mb-2">ATS Resume Analyzer</h5>
+                    <p class="text-muted text-sm mb-3">
+                        Algorithmic audit evaluating section completeness, action verb density, quantifiable metrics, and readability.
+                    </p>
+                    <a href="{{ url_for('analysis') }}" class="mt-auto text-primary fw-semibold text-sm d-inline-flex align-items-center gap-1 text-decoration-none">
+                        View Analysis <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Feature 2: Job Description Matching -->
+            <div class="col-md-6 col-xl-3">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 feature-card transition-all">
+                    <div class="feature-icon bg-success-subtle text-success rounded-3 mb-3 p-3 d-inline-flex">
+                        <i class="bi bi-crosshair fs-4"></i>
+                    </div>
+                    <h5 class="fw-bold text-navy mb-2">Job Description Matcher</h5>
+                    <p class="text-muted text-sm mb-3">
+                        Paste target job listings to uncover matched vs missing keywords and receive evidence-backed skill recommendations.
+                    </p>
+                    <a href="{{ url_for('job_match') }}" class="mt-auto text-success fw-semibold text-sm d-inline-flex align-items-center gap-1 text-decoration-none">
+                        Match Job <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Feature 3: AI Resume Enhancer -->
+            <div class="col-md-6 col-xl-3">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 feature-card transition-all">
+                    <div class="feature-icon bg-purple-subtle text-purple rounded-3 mb-3 p-3 d-inline-flex">
+                        <i class="bi bi-magic fs-4"></i>
+                    </div>
+                    <h5 class="fw-bold text-navy mb-2">Gemini AI Enhancer</h5>
+                    <p class="text-muted text-sm mb-3">
+                        Rewrite your summary and experience using the STAR method without fabricating false qualifications or metrics.
+                    </p>
+                    <a href="{{ url_for('enhance') }}" class="mt-auto text-purple fw-semibold text-sm d-inline-flex align-items-center gap-1 text-decoration-none">
+                        Enhance Resume <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Feature 4: Resume Builder & PDF Generator -->
+            <div class="col-md-6 col-xl-3">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 feature-card transition-all">
+                    <div class="feature-icon bg-info-subtle text-info rounded-3 mb-3 p-3 d-inline-flex">
+                        <i class="bi bi-file-earmark-pdf-fill fs-4"></i>
+                    </div>
+                    <h5 class="fw-bold text-navy mb-2">Multi-Template Builder</h5>
+                    <p class="text-muted text-sm mb-3">
+                        Choose between Modern Blue, Executive Slate, and Minimalist Tech templates. Export high-res ReportLab PDFs.
+                    </p>
+                    <a href="{{ url_for('builder') }}" class="mt-auto text-info fw-semibold text-sm d-inline-flex align-items-center gap-1 text-decoration-none">
+                        Build & Download <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works Section -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 mb-5 bg-white">
+        <div class="text-center mb-4">
+            <h3 class="fw-bold text-navy mb-2">How It Works in 4 Simple Steps</h3>
+            <p class="text-muted">A streamlined pipeline from raw PDF/Word document to interview-winning resume</p>
+        </div>
+
+        <div class="row g-4 text-center">
+            <div class="col-md-3">
+                <div class="step-badge rounded-circle bg-navy text-white fw-bold mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">1</div>
+                <h6 class="fw-bold text-navy mb-2">Upload Document</h6>
+                <p class="text-muted text-xs">Drag and drop your PDF or DOCX resume. Instant text extraction and section segmentation.</p>
+            </div>
+            <div class="col-md-3">
+                <div class="step-badge rounded-circle bg-navy text-white fw-bold mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">2</div>
+                <h6 class="fw-bold text-navy mb-2">Analyze ATS Compatibility</h6>
+                <p class="text-muted text-xs">Review your estimated ATS score out of 100 with category ratings and missing section alerts.</p>
+            </div>
+            <div class="col-md-3">
+                <div class="step-badge rounded-circle bg-navy text-white fw-bold mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">3</div>
+                <h6 class="fw-bold text-navy mb-2">Match & AI Optimize</h6>
+                <p class="text-muted text-xs">Compare against target job postings. Let Gemini AI rephrase bullet points with powerful action verbs.</p>
+            </div>
+            <div class="col-md-3">
+                <div class="step-badge rounded-circle bg-navy text-white fw-bold mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">4</div>
+                <h6 class="fw-bold text-navy mb-2">Download PDF Resume</h6>
+                <p class="text-muted text-xs">Select from 3 ATS-compliant templates and download crisp, publication-ready PDFs.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tech Stack Section -->
+    <div class="text-center py-3 mb-4">
+        <div class="text-xs uppercase tracking-wider text-muted fw-bold mb-3">Enterprise Tech Stack</div>
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            <span class="badge bg-light text-navy border px-3 py-2 rounded-pill fw-medium"><i class="bi bi-filetype-py me-1 text-primary"></i>Python 3.11</span>
+            <span class="badge bg-light text-navy border px-3 py-2 rounded-pill fw-medium"><i class="bi bi-box me-1 text-primary"></i>Flask Framework</span>
+            <span class="badge bg-light text-navy border px-3 py-2 rounded-pill fw-medium"><i class="bi bi-stars me-1 text-purple"></i>Google Gemini API</span>
+            <span class="badge bg-light text-navy border px-3 py-2 rounded-pill fw-medium"><i class="bi bi-file-earmark-pdf me-1 text-danger"></i>PyMuPDF</span>
+            <span class="badge bg-light text-navy border px-3 py-2 rounded-pill fw-medium"><i class="bi bi-file-earmark-word me-1 text-primary"></i>python-docx</span>
+            <span class="badge bg-light text-navy border px-3 py-2 rounded-pill fw-medium"><i class="bi bi-printer me-1 text-info"></i>ReportLab PDF</span>
+            <span class="badge bg-light text-navy border px-3 py-2 rounded-pill fw-medium"><i class="bi bi-database me-1 text-success"></i>SQLite</span>
+            <span class="badge bg-light text-navy border px-3 py-2 rounded-pill fw-medium"><i class="bi bi-bootstrap me-1 text-purple"></i>Bootstrap 5</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

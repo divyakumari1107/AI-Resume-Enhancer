@@ -1,0 +1,285 @@
+/* ==========================================================================
+   AI Resume Enhancer & ATS Analyzer - Custom Stylesheet
+   Color Palette: Deep Navy (#0B192C), Slate (#1E3E62), Royal Blue (#0066FF)
+   ========================================================================== */
+
+:root {
+    --navy-dark: #081220;
+    --navy-main: #0B192C;
+    --navy-card: #12233C;
+    --navy-light: #1E3E62;
+    --primary-blue: #0066FF;
+    --primary-light: #388BFF;
+    --surface-bg: #F4F7FB;
+    --card-bg: #FFFFFF;
+    --text-navy: #0B192C;
+    --text-muted: #64748B;
+    --border-subtle: #E2E8F0;
+    --purple-main: #8B5CF6;
+    --purple-subtle: #F5F3FF;
+    --purple-border: #DDD6FE;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-navy);
+    background-color: var(--surface-bg);
+    overflow-x: hidden;
+}
+
+/* Background Utility Classes */
+.bg-navy { background-color: var(--navy-main) !important; }
+.bg-navy-dark { background-color: var(--navy-dark) !important; }
+.bg-navy-card { background-color: var(--navy-card) !important; }
+.border-navy-light { border-color: rgba(255, 255, 255, 0.1) !important; }
+.bg-surface { background-color: var(--surface-bg) !important; }
+.text-navy { color: var(--text-navy) !important; }
+.text-primary-light { color: var(--primary-light) !important; }
+.text-purple { color: var(--purple-main) !important; }
+.bg-purple { background-color: var(--purple-main) !important; }
+.bg-purple-subtle { background-color: var(--purple-subtle) !important; }
+.border-purple-subtle { border-color: var(--purple-border) !important; }
+.btn-purple {
+    background-color: var(--purple-main);
+    border-color: var(--purple-main);
+    color: #fff;
+}
+.btn-purple:hover {
+    background-color: #7C3AED;
+    border-color: #7C3AED;
+    color: #fff;
+}
+.btn-outline-purple {
+    color: var(--purple-main);
+    border-color: var(--purple-main);
+}
+.btn-outline-purple:hover {
+    background-color: var(--purple-main);
+    color: #fff;
+}
+
+/* Typography Helpers */
+.text-xs { font-size: 0.75rem; }
+.text-sm { font-size: 0.875rem; }
+.fw-extrabold { font-weight: 800; }
+.tracking-wider { letter-spacing: 0.05em; }
+
+/* Sidebar Navigation */
+.sidebar {
+    width: 250px;
+    min-height: calc(100vh - 58px);
+    transition: all 0.25s ease-in-out;
+}
+@media (max-width: 991.98px) {
+    .sidebar {
+        width: 100%;
+        min-height: auto;
+    }
+    .min-vh-100 {
+        flex-direction: column;
+    }
+}
+
+.sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.65rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    color: #94A3B8;
+    transition: all 0.2s ease;
+}
+.sidebar .nav-link:hover {
+    color: #FFFFFF;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+.sidebar .nav-link.active {
+    background-color: var(--primary-blue) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.35);
+}
+
+/* Engine Pulse Indicator */
+.status-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 0 rgba(16, 185, 129, 0.4);
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* Hero Section */
+.bg-gradient-navy {
+    background: linear-gradient(135deg, #0B192C 0%, #1E3E62 100%);
+}
+.hero-glow-1 {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(0, 102, 255, 0.25) 0%, rgba(0, 102, 255, 0) 70%);
+    top: -50px;
+    right: 5%;
+    pointer-events: none;
+}
+.hero-glow-2 {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, rgba(139, 92, 246, 0) 70%);
+    bottom: -50px;
+    left: 10%;
+    pointer-events: none;
+}
+.max-w-xl { max-width: 650px; }
+.max-w-lg { max-width: 500px; }
+
+/* Circular Progress Indicator */
+.circular-progress-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.circular-chart {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+}
+.circle-bg {
+    fill: none;
+    stroke: rgba(0, 0, 0, 0.08);
+    stroke-width: 3.2;
+}
+.card.bg-navy-card .circle-bg {
+    stroke: rgba(255, 255, 255, 0.1);
+}
+.circle {
+    fill: none;
+    stroke-width: 3.2;
+    stroke-linecap: round;
+    animation: progress 1.2s ease-out forwards;
+}
+.progress-label {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+@keyframes progress {
+    0% { stroke-dasharray: 0 100; }
+}
+
+/* Feature Cards */
+.feature-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(11, 25, 44, 0.08) !important;
+}
+
+/* Upload Dropzone */
+.upload-dropzone {
+    border-color: #CBD5E1;
+    background-color: #F8FAFC;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.upload-dropzone:hover, .upload-dropzone.dragover {
+    border-color: var(--primary-blue);
+    background-color: rgba(0, 102, 255, 0.03);
+}
+
+/* Live Resume Preview Canvas & Templates */
+.resume-preview-sheet {
+    font-size: 0.85rem;
+    min-height: 550px;
+    background-color: #FFFFFF;
+}
+
+/* Template 1: Modern Blue Preview */
+.template-modern_blue .preview-name {
+    color: var(--primary-blue);
+    font-size: 1.5rem;
+}
+.template-modern_blue .preview-sec-title {
+    color: var(--primary-blue);
+    border-bottom: 1px solid #E2E8F0;
+    padding-bottom: 2px;
+}
+.template-modern_blue .template-divider {
+    height: 2px;
+    background-color: var(--primary-blue);
+}
+
+/* Template 2: Executive Slate Preview */
+.template-executive_slate .resume-header {
+    text-align: center;
+}
+.template-executive_slate .preview-name {
+    color: #1E293B;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+}
+.template-executive_slate .preview-role {
+    font-style: italic;
+}
+.template-executive_slate .preview-sec-title {
+    color: #1E293B;
+    border-bottom: 1px solid #94A3B8;
+    padding-bottom: 2px;
+    text-transform: uppercase;
+}
+.template-executive_slate .template-divider {
+    height: 2px;
+    background-color: #1E293B;
+}
+
+/* Template 3: Minimalist Tech Preview */
+.template-minimalist_tech .preview-name {
+    color: #111827;
+    font-size: 1.4rem;
+}
+.template-minimalist_tech .preview-sec-title {
+    color: #111827;
+    border-bottom: 1px solid #D1D5DB;
+    padding-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+}
+.template-minimalist_tech .template-divider {
+    height: 1px;
+    background-color: #111827;
+}
+
+/* Global Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(11, 25, 44, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+    .border-end-md {
+        border-right: 1px solid var(--border-subtle);
+    }
+}
