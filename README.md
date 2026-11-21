@@ -1,5 +1,7 @@
 # AI Resume Enhancer & ATS Analyzer
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-ai--resume--enhancer.onrender.com-success?style=for-the-badge&logo=render)](https://ai-resume-enhancer-oorj.onrender.com)
+[![Render Production](https://img.shields.io/badge/Render-24%2F7%20Live-46E3B7.svg?logo=render)](https://ai-resume-enhancer-oorj.onrender.com)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![Flask](https://img.shields.io/badge/Flask-3.0%2B-black.svg?logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
 [![Google Gemini](https://img.shields.io/badge/Google%20Gemini-API%20Enabled-orange.svg?logo=google&logoColor=white)](https://ai.google.dev/)
@@ -7,6 +9,19 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 An enterprise-grade, full-stack AI web application designed to help job seekers audit ATS compatibility, match resumes against job descriptions, enhance bullet points using the STAR methodology with Google Gemini AI, and generate downloadable ATS-compliant PDF resumes across multiple professional templates.
+
+---
+
+## 🌐 Live Production Deployments
+
+This project is deployed live on Render as a continuous Python 3.11 Gunicorn web service:
+
+| Resource | Live Link | Description | Status |
+| :--- | :--- | :--- | :--- |
+| **AI Resume Enhancer (Live Web App)** | **[https://ai-resume-enhancer-oorj.onrender.com](https://ai-resume-enhancer-oorj.onrender.com)** | Full ATS Analyzer, Resume Upload, & AI Rewriting Studio | 🟢 **Live (200 OK)** |
+| **Resume Upload & Audit** | **[https://ai-resume-enhancer-oorj.onrender.com/upload](https://ai-resume-enhancer-oorj.onrender.com/upload)** | Multi-format PDF & DOCX upload and instant parsing | 🟢 **Live (200 OK)** |
+| **ATS Scorecard Dashboard** | **[https://ai-resume-enhancer-oorj.onrender.com/dashboard](https://ai-resume-enhancer-oorj.onrender.com/dashboard)** | Visual circular score gauge and section breakdown | 🟢 **Live (200 OK)** |
+| **Production Health Probe** | **[https://ai-resume-enhancer-oorj.onrender.com/health](https://ai-resume-enhancer-oorj.onrender.com/health)** | Automated health check endpoint | 🟢 **Live (200 OK)** |
 
 ---
 
