@@ -478,6 +478,16 @@ def api_enhance_section():
     return jsonify({"success": True, "result": res})
 
 
+@app.route("/health")
+def health():
+    """Health check probe for Vercel, Render, and Docker."""
+    return jsonify({
+        "status": "healthy",
+        "service": Config.APP_NAME,
+        "version": Config.VERSION
+    }), 200
+
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
