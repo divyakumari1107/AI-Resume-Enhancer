@@ -22,6 +22,38 @@ from pdf_generator import generate_resume_pdf
 app = Flask(__name__)
 app.config.from_object(Config)
 
+
+# WSGI middleware to accurately resolve Vercel serverless request path
+import urllib.parse
+
+class VercelPathFixer:
+    def __init__(self, wsgi_app):
+        self.wsgi_app = wsgi_app
+
+    def __call__(self, environ, start_response):
+        query = environ.get("QUERY_STRING", "")
+        params = urllib.parse.parse_qs(query)
+        if "__path__" in params and params["__path__"]:
+            real_path = params["__path__"][0]
+            if not real_path.startswith("/"):
+                real_path = "/" + real_path
+            environ["PATH_INFO"] = real_path
+            del params["__path__"]
+            environ["QUERY_STRING"] = urllib.parse.urlencode(params, doseq=True)
+        else:
+            path = environ.get("PATH_INFO", "")
+            for prefix in ["/api/index.py", "/api/index", "/api", "/index.py"]:
+                if path == prefix:
+                    environ["PATH_INFO"] = "/"
+                    break
+                elif path.startswith(prefix + "/"):
+                    environ["PATH_INFO"] = path[len(prefix):]
+                    break
+        return self.wsgi_app(environ, start_response)
+
+
+app.wsgi_app = VercelPathFixer(app.wsgi_app)
+
 # Initialize database schema on startup
 with app.app_context():
     init_db()

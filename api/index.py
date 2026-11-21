@@ -1,5 +1,6 @@
 import os
 import sys
+import urllib.parse
 
 # Ensure project root is in python path
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -11,20 +12,30 @@ if parent_dir not in sys.path:
 from app import app
 
 
-# WSGI middleware to strip Vercel serverless prefix if passed by rewrite
+# WSGI middleware to accurately resolve Vercel serverless request path
 class VercelPathFixer:
     def __init__(self, wsgi_app):
         self.wsgi_app = wsgi_app
 
     def __call__(self, environ, start_response):
-        path = environ.get("PATH_INFO", "")
-        for prefix in ["/api/index.py", "/api/index"]:
-            if path == prefix:
-                environ["PATH_INFO"] = "/"
-                break
-            elif path.startswith(prefix + "/"):
-                environ["PATH_INFO"] = path[len(prefix):]
-                break
+        query = environ.get("QUERY_STRING", "")
+        params = urllib.parse.parse_qs(query)
+        if "__path__" in params and params["__path__"]:
+            real_path = params["__path__"][0]
+            if not real_path.startswith("/"):
+                real_path = "/" + real_path
+            environ["PATH_INFO"] = real_path
+            del params["__path__"]
+            environ["QUERY_STRING"] = urllib.parse.urlencode(params, doseq=True)
+        else:
+            path = environ.get("PATH_INFO", "")
+            for prefix in ["/api/index.py", "/api/index"]:
+                if path == prefix:
+                    environ["PATH_INFO"] = "/"
+                    break
+                elif path.startswith(prefix + "/"):
+                    environ["PATH_INFO"] = path[len(prefix):]
+                    break
         return self.wsgi_app(environ, start_response)
 
 
