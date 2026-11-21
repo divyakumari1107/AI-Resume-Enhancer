@@ -10,7 +10,26 @@ if parent_dir not in sys.path:
 
 from app import app
 
-# Vercel WSGI entry points
+
+# WSGI middleware to strip Vercel serverless prefix if passed by rewrite
+class VercelPathFixer:
+    def __init__(self, wsgi_app):
+        self.wsgi_app = wsgi_app
+
+    def __call__(self, environ, start_response):
+        path = environ.get("PATH_INFO", "")
+        for prefix in ["/api/index.py", "/api/index"]:
+            if path == prefix:
+                environ["PATH_INFO"] = "/"
+                break
+            elif path.startswith(prefix + "/"):
+                environ["PATH_INFO"] = path[len(prefix):]
+                break
+        return self.wsgi_app(environ, start_response)
+
+
+app.wsgi_app = VercelPathFixer(app.wsgi_app)
+
+# Vercel entrypoints
 handler = app
 application = app
-app = app
